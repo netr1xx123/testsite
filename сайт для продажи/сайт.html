@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ТЕСТ САЙТА — эксклюзивные автомобили</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #141414;
+            --bg-secondary: #1e1e1e;
+            --bg-card: #252525;
+            --bg-card-hover: #2e2e2e;
+            --gray-100: #f0f0f0;
+            --gray-200: #d0d0d0;
+            --gray-300: #b0b0b0;
+            --gray-400: #888888;
+            --gray-500: #666666;
+            --gray-600: #444444;
+            --gray-700: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #c0c0c0;
+            --text-muted: #777777;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-500);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-layer {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.02), transparent 70%);
+            animation: floatBg 20s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        .bg-layer:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            top: -10%;
+            right: -10%;
+            animation-duration: 25s;
+            background: radial-gradient(circle, rgba(200, 200, 200, 0.03), transparent 70%);
+        }
+        .bg-layer:nth-child(2) {
+            width: 450px;
+            height: 450px;
+            bottom: -5%;
+            left: -5%;
+            animation-duration: 30s;
+            animation-delay: -5s;
+            background: radial-gradient(circle, rgba(180, 180, 180, 0.025), transparent 70%);
+        }
+        .bg-layer:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            top: 40%;
+            left: 30%;
+            animation-duration: 22s;
+            animation-delay: -10s;
+            background: radial-gradient(circle, rgba(220, 220, 220, 0.02), transparent 70%);
+        }
+        .bg-layer:nth-child(4) {
+            width: 800px;
+            height: 800px;
+            top: 50%;
+            right: 20%;
+            animation-duration: 35s;
+            animation-delay: -3s;
+            background: radial-gradient(circle, rgba(160, 160, 160, 0.015), transparent 70%);
+        }
+
+        @keyframes floatBg {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -40px) scale(1.05) rotate(5deg);
+            }
+            66% {
+                transform: translate(-20px, 30px) scale(0.95) rotate(-5deg);
+            }
+            100% {
+                transform: translate(10px, -20px) scale(1.02) rotate(3deg);
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at 20px 20px, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridPulse {
+            0% {
+                opacity: 0.3;
+                background-size: 40px 40px;
+            }
+            100% {
+                opacity: 0.8;
+                background-size: 42px 42px;
+            }
+        }
+
+        .lines-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .line {
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            animation: slideLine 12s linear infinite;
+        }
+
+        .line:nth-child(1) {
+            top: 15%;
+            animation-duration: 14s;
+            animation-delay: 0s;
+        }
+        .line:nth-child(2) {
+            top: 35%;
+            animation-duration: 18s;
+            animation-delay: -4s;
+        }
+        .line:nth-child(3) {
+            top: 55%;
+            animation-duration: 16s;
+            animation-delay: -8s;
+        }
+        .line:nth-child(4) {
+            top: 75%;
+            animation-duration: 20s;
+            animation-delay: -2s;
+        }
+        .line:nth-child(5) {
+            top: 92%;
+            animation-duration: 13s;
+            animation-delay: -6s;
+        }
+
+        @keyframes slideLine {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            background: rgba(20, 20, 20, 0.92);
+            border-bottom-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--gray-200);
+        }
+        .logo span {
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+        .logo .accent {
+            color: var(--gray-300);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gray-300);
+            transition: var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-primary) !important;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+        .nav-cta::after {
+            display: none !important;
+        }
+        .nav-cta:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-300);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(44px, 7vw, 80px);
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #ffffff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: clamp(16px, 1.3vw, 20px);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: var(--text-primary);
+            padding: 14px 44px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== CARS SECTION ===== */
+        .cars {
+            position: relative;
+            z-index: 1;
+            padding: 60px 0 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(30px, 3.6vw, 44px);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .section-header h2 .gray {
+            color: var(--gray-300);
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .section-divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gray-300), transparent);
+            margin: 12px auto 0;
+            border-radius: 4px;
+        }
+
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .car-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 0 0 24px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .car-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.08);
+            background: var(--bg-card-hover);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .car-image {
+            height: 180px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+        .car-image .car-emoji {
+            filter: grayscale(0.3);
+            transition: var(--transition);
+        }
+        .car-card:hover .car-emoji {
+            transform: scale(1.05);
+            filter: grayscale(0);
+        }
+
+        .car-content {
+            padding: 18px 20px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .car-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .car-content .subtitle {
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .car-content .specs {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+        .car-content .specs span {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .car-content .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gray-200);
+            margin-bottom: 14px;
+        }
+        .car-content .price small {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+        }
+        .car-content .btn-details {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            padding: 10px 0;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+            margin-top: auto;
+            font-family: 'Inter', sans-serif;
+        }
+        .car-content .btn-details:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        /* ===== WHY US ===== */
+        .why-us {
+            position: relative;
+            z-index: 1;
+            padding: 40px 0 80px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 28px;
+            margin-top: 32px;
+        }
+        .feature-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+        }
+        .feature-item:hover {
+            border-color: rgba(255, 255, 255, 0.06);
+            transform: translateY(-4px);
+        }
+        .feature-item .icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .feature-item h4 {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+        .feature-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            position: relative;
+            z-index: 1;
+            padding: 20px 0 80px;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .testimonial-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .testimonial-card .stars {
+            color: var(--gray-300);
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .testimonial-card blockquote {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.7;
+        }
+        .testimonial-card .author {
+            margin-top: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .testimonial-card .author span {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* ===== МОДАЛЬНОЕ ОКНО ДЛЯ АВТО ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px 28px;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: var(--transition);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+        .modal .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 28px;
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .modal .close-btn:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+        .modal .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-right: 32px;
+        }
+        .modal .modal-header .modal-icon {
+            font-size: 48px;
+            line-height: 1;
+        }
+        .modal .modal-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+        }
+        .modal .modal-header .modal-sub {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 300;
+        }
+        .modal .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+            margin: 16px 0 24px;
+        }
+        .modal .modal-body .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 14px;
+        }
+        .modal .modal-body .spec-item .label {
+            color: var(--text-muted);
+        }
+        .modal .modal-body .spec-item .value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .modal .modal-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gray-200);
+            text-align: center;
+            margin: 8px 0 20px;
+        }
+        .modal .modal-price small {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+        }
+        .modal .btn-buy-crypto {
+            display: block;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: var(--text-primary);
+            padding: 14px 0;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+        .modal .btn-buy-crypto:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== ЗОЛОТАЯ ВИЗИТКА ===== */
+        .visit-card {
+            background: linear-gradient(145deg, #b8860b, #d4af37, #f0d060, #b8860b);
+            background-size: 300% 300%;
+            border-radius: 20px;
+            padding: 40px 32px 32px;
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            box-shadow: 
+                0 0 40px rgba(212, 175, 55, 0.4),
+                inset 0 2px 4px rgba(255, 215, 0, 0.5),
+                inset 0 -4px 8px rgba(139, 69, 19, 0.4);
+            border: 2px solid #d4af37;
+            position: relative;
+            text-align: center;
+            color: #1a1a1a;
+            font-family: 'Playfair Display', serif;
+            transition: all 0.3s ease;
+            animation: goldShine 6s ease-in-out infinite;
+        }
+
+        .visit-card::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 14px;
+            pointer-events: none;
+        }
+
+        .visit-card .card-icon {
+            font-size: 56px;
+            margin-bottom: 8px;
+            display: block;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .visit-card .card-name {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(255,215,0,0.4);
+            margin-bottom: 4px;
+        }
+
+        .visit-card .card-title {
+            font-size: 18px;
+            font-weight: 400;
+            color: #3d2b1f;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .visit-card .card-email {
+            font-size: 20px;
+            font-weight: 500;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .visit-card .card-divider {
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent);
+            margin: 8px auto 12px;
+        }
+
+        .visit-card .card-phone {
+            font-size: 16px;
+            color: #3d2b1f;
+            margin-bottom: 6px;
+        }
+
+        .visit-card .card-footer {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #3d2b1f;
+            opacity: 0.8;
+            margin-top: 8px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            padding-top: 14px;
+        }
+
+        .visit-card .card-footer strong {
+            font-weight: 700;
+            opacity: 1;
+        }
+
+        @keyframes goldShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 40px 0 28px;
+            position: relative;
+            z-index: 1;
+            background: var(--bg-primary);
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .footer .logo {
+            font-size: 24px;
+        }
+        .footer p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-socials a {
+            color: var(--text-secondary);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+        .footer-socials a:hover {
+            color: var(--text-primary);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+        .delay-5 {
+            transition-delay: 0.5s;
+        }
+        .delay-6 {
+            transition-delay: 0.6s;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links {
+                gap: 20px;
+                font-size: 13px;
+            }
+            .modal .modal-body {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 80px 32px 32px;
+                gap: 20px;
+                font-size: 16px;
+                transition: var(--transition);
+                border-left: 1px solid rgba(255, 255, 255, 0.04);
+                align-items: flex-start;
+            }
+            .nav-links.open {
+                right: 0;
+            }
+            .nav-links a::after {
+                display: none;
+            }
+            .nav-cta {
+                margin-top: 8px;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .cars-grid {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 24px 16px;
+            }
+            .modal .modal-header {
+                flex-wrap: wrap;
+            }
+            .modal .modal-header .modal-icon {
+                font-size: 36px;
+            }
+            .modal .modal-header h3 {
+                font-size: 22px;
+            }
+            .modal .modal-price {
+                font-size: 26px;
+            }
+            .visit-card {
+                padding: 28px 20px;
+            }
+            .visit-card .card-name {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            .container {
+                padding: 0 16px;
+            }
+            .car-image {
+                height: 150px;
+                font-size: 48px;
+            }
+            .car-content h3 {
+                font-size: 18px;
+            }
+            .car-content .price {
+                font-size: 22px;
+            }
+            .visit-card .card-email {
+                font-size: 17px;
+                padding: 6px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ANIMATED BACKGROUND ===== -->
+    <div class="bg-animation">
+        <div class="bg-layer"></div>
+        <div class="bg-layer"></div>
+        <div class="bg-layer"></div>
+        <div class="bg-layer"></div>
+    </div>
+    <div class="grid-overlay"></div>
+    <div class="lines-overlay">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="#" class="logo">Luxury<span>Motors</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#cars">Автомобили</a></li>
+                <li><a href="#why">О нас</a></li>
+                <li><a href="#testimonials">Отзывы</a></li>
+                <li><a href="#" class="nav-cta" id="contactBtn">Связаться</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-badge">✦ Эксклюзивные предложения</div>
+            <h1>
+                Выбери свой<br />
+                <span class="highlight">идеальный автомобиль</span>
+            </h1>
+            <p>
+                Премиальные автомобили от лучших мировых брендов. Только проверенные экземпляры с полной историей.
+            </p>
+            <div class="hero-buttons">
+                <a href="#cars" class="btn-primary">Смотреть каталог</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CARS ===== -->
+    <section class="cars" id="cars">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Наш <span class="gray">автопарк</span></h2>
+                <div class="section-divider"></div>
+                <p>Роскошные автомобили с безупречным состоянием</p>
+            </div>
+
+            <div class="cars-grid" id="carsGrid">
+                <!-- Карточки будут заполнены из JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHY US ===== -->
+    <section class="why-us" id="why">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Почему <span class="gray">выбирают нас</span></h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item fade-up delay-1">
+                    <span class="icon">🔍</span>
+                    <h4>Полная проверка</h4>
+                    <p>Каждый автомобиль проходит многоступенчатую техническую диагностику.</p>
+                </div>
+                <div class="feature-item fade-up delay-2">
+                    <span class="icon">📄</span>
+                    <h4>Прозрачная история</h4>
+                    <p>Предоставляем полный отчёт по пробегу, обслуживанию и владельцам.</p>
+                </div>
+                <div class="feature-item fade-up delay-3">
+                    <span class="icon">🤝</span>
+                    <h4>Индивидуальный подход</h4>
+                    <p>Поможем подобрать автомобиль под ваши задачи и предпочтения.</p>
+                </div>
+                <div class="feature-item fade-up delay-4">
+                    <span class="icon">🚚</span>
+                    <h4>Доставка по миру</h4>
+                    <p>Организуем доставку в любую точку планеты с полным сопровождением.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Отзывы <span class="gray">клиентов</span></h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-up delay-1">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“Приобрёл Ferrari SF90. Автомобиль в идеальном состоянии, все документы чисты. Огромное спасибо команде!”</blockquote>
+                    <div class="author">Алексей К. <span>— бизнесмен</span></div>
+                </div>
+                <div class="testimonial-card fade-up delay-2">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“Заказывал Bentley для корпоративного парка. Всё прошло быстро, доставили точно в срок. Рекомендую.”</blockquote>
+                    <div class="author">Елена В. <span>— руководитель</span></div>
+                </div>
+                <div class="testimonial-card fade-up delay-3">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“Купил G 63 для поездок за город. Машина мощная, комфортная. Отдельное спасибо за консультацию.”</blockquote>
+                    <div class="author">Дмитрий С. <span>— коллекционер</span></div>
+                </div>
+                <div class="testimonial-card fade-up delay-4">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>“Porsche 911 Turbo S – мечта! Всё сделали профессионально, даже помогли с оформлением.”</blockquote>
+                    <div class="author">Игорь М. <span>— предприниматель</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ АВТОМОБИЛЕЙ ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="close-btn" id="modalCloseBtn">✕</button>
+            <div class="modal-header">
+                <span class="modal-icon" id="modalIcon">🚗</span>
+                <div>
+                    <h3 id="modalTitle">Название</h3>
+                    <div class="modal-sub" id="modalSub">Подзаголовок</div>
+                </div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-price" id="modalPrice">$0 <small>USD</small></div>
+            <a href="#" class="btn-buy-crypto" id="modalBuyBtn">Купить за криптовалюту</a>
+        </div>
+    </div>
+
+    <!-- ===== МОДАЛЬНОЕ ОКНО ДЛЯ ВИЗИТКИ ===== -->
+    <div class="modal-overlay" id="visitModal">
+        <div class="modal" style="max-width: 520px; background: transparent; box-shadow: none; border: none; padding: 0; border-radius: 0;">
+            <button class="close-btn" id="visitCloseBtn" style="position: absolute; top: -40px; right: 0; color: #fff; font-size: 32px; background: none; border: none; cursor: pointer; z-index: 10; padding: 0 12px;">✕</button>
+            <div class="visit-card">
+                <span class="card-icon">👤</span>
+                <div class="card-name">Иван Петров</div>
+                <div class="card-title">Luxury Motors · Консультант</div>
+                <div class="card-email">📧 ivan@luxurymotors.com</div>
+                <div class="card-phone">✆ +7 999 123-45-67</div>
+                <div class="card-divider"></div>
+                <div class="card-footer">
+                    <strong>✦ Luxury Motors ✦</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <a href="#" class="logo">Luxury<span>Motors</span></a>
+            <p>© 2026 Luxury Motors. Все права защищены.</p>
+            <div class="footer-socials">
+                <a href="#" aria-label="Instagram">📸</a>
+                <a href="#" aria-label="Telegram">📱</a>
+                <a href="#" aria-label="YouTube">▶️</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ----- Данные автомобилей (полные характеристики) -----
+        const carsData = [{
+            id: 'ferrari-sf90',
+            name: 'Ferrari SF90 Stradale',
+            subtitle: 'Гибридный суперкар',
+            emoji: '🏎️',
+            price: 524900,
+            specs: {
+                'Двигатель': 'V8 + электромотор',
+                'Мощность': '986 л.с.',
+                'Разгон 0–100': '2.5 с',
+                'Макс. скорость': '340 км/ч',
+                'Расход': '6.8 л/100 км',
+                'Трансмиссия': '8-ступ. DCT',
+                'Привод': 'Полный',
+                'Объём': '3990 см³'
+            }
+        }, {
+            id: 'bentley-continental',
+            name: 'Bentley Continental GT',
+            subtitle: 'Люкс-купе',
+            emoji: '🚗',
+            price: 298000,
+            specs: {
+                'Двигатель': 'V8 4.0 л',
+                'Мощность': '550 л.с.',
+                'Разгон 0–100': '4.0 с',
+                'Макс. скорость': '318 км/ч',
+                'Расход': '11.4 л/100 км',
+                'Трансмиссия': '8-ступ. автомат',
+                'Привод': 'Полный',
+                'Объём': '3996 см³'
+            }
+        }, {
+            id: 'mercedes-g63',
+            name: 'Mercedes-AMG G 63',
+            subtitle: 'Внедорожник класса люкс',
+            emoji: '🚙',
+            price: 179000,
+            specs: {
+                'Двигатель': 'V8 4.0 л',
+                'Мощность': '585 л.с.',
+                'Разгон 0–100': '4.5 с',
+                'Макс. скорость': '220 км/ч',
+                'Расход': '14.9 л/100 км',
+                'Трансмиссия': '9-ступ. автомат',
+                'Привод': 'Полный',
+                'Объём': '3982 см³'
+            }
+        }, {
+            id: 'rolls-royce-cullinan',
+            name: 'Rolls-Royce Cullinan',
+            subtitle: 'Флагманский внедорожник',
+            emoji: '🛻',
+            price: 351000,
+            specs: {
+                'Двигатель': 'V12 6.75 л',
+                'Мощность': '571 л.с.',
+                'Разгон 0–100': '5.0 с',
+                'Макс. скорость': '250 км/ч',
+                'Расход': '15.8 л/100 км',
+                'Трансмиссия': '8-ступ. автомат',
+                'Привод': 'Полный',
+                'Объём': '6749 см³'
+            }
+        }, {
+            id: 'porsche-911-turbo-s',
+            name: 'Porsche 911 Turbo S',
+            subtitle: 'Спорткар',
+            emoji: '🏁',
+            price: 195000,
+            specs: {
+                'Двигатель': '6-цил. оппозит 3.8 л',
+                'Мощность': '650 л.с.',
+                'Разгон 0–100': '2.7 с',
+                'Макс. скорость': '330 км/ч',
+                'Расход': '11.5 л/100 км',
+                'Трансмиссия': '8-ступ. PDK',
+                'Привод': 'Полный',
+                'Объём': '3800 см³'
+            }
+        }, {
+            id: 'porsche-taycan-turbo-s',
+            name: 'Porsche Taycan Turbo S',
+            subtitle: 'Электрический спортседан',
+            emoji: '⚡',
+            price: 190000,
+            specs: {
+                'Двигатель': 'Электрический',
+                'Мощность': '761 л.с.',
+                'Разгон 0–100': '2.8 с',
+                'Макс. скорость': '260 км/ч',
+                'Запас хода': '412 км',
+                'Трансмиссия': '2-ступ. редуктор',
+                'Привод': 'Полный',
+                'Объём': '—'
+            }
+        }, {
+            id: 'lamborghini-huracan-evo',
+            name: 'Lamborghini Huracán EVO',
+            subtitle: 'Суперкар',
+            emoji: '🐂',
+            price: 210000,
+            specs: {
+                'Двигатель': 'V10 5.2 л',
+                'Мощность': '640 л.с.',
+                'Разгон 0–100': '2.9 с',
+                'Макс. скорость': '325 км/ч',
+                'Расход': '13.9 л/100 км',
+                'Трансмиссия': '7-ступ. DCT',
+                'Привод': 'Полный',
+                'Объём': '5204 см³'
+            }
+        }, {
+            id: 'aston-martin-vantage',
+            name: 'Aston Martin Vantage',
+            subtitle: 'Британский спорткар',
+            emoji: '🦅',
+            price: 185000,
+            specs: {
+                'Двигатель': 'V8 4.0 л',
+                'Мощность': '510 л.с.',
+                'Разгон 0–100': '3.6 с',
+                'Макс. скорость': '314 км/ч',
+                'Расход': '10.5 л/100 км',
+                'Трансмиссия': '8-ступ. автомат',
+                'Привод': 'Задний',
+                'Объём': '3982 см³'
+            }
+        }, {
+            id: 'maserati-mc20',
+            name: 'Maserati MC20',
+            subtitle: 'Суперкар',
+            emoji: '🔱',
+            price: 200000,
+            specs: {
+                'Двигатель': 'V6 3.0 л',
+                'Мощность': '630 л.с.',
+                'Разгон 0–100': '2.9 с',
+                'Макс. скорость': '325 км/ч',
+                'Расход': '11.6 л/100 км',
+                'Трансмиссия': '8-ступ. DCT',
+                'Привод': 'Задний',
+                'Объём': '3000 см³'
+            }
+        }, {
+            id: 'bmw-m8-competition',
+            name: 'BMW M8 Competition',
+            subtitle: 'Гран туризмо',
+            emoji: '🏆',
+            price: 140000,
+            specs: {
+                'Двигатель': 'V8 4.4 л',
+                'Мощность': '617 л.с.',
+                'Разгон 0–100': '3.2 с',
+                'Макс. скорость': '305 км/ч',
+                'Расход': '12.6 л/100 км',
+                'Трансмиссия': '8-ступ. автомат',
+                'Привод': 'Полный',
+                'Объём': '4395 см³'
+            }
+        }, {
+            id: 'mercedes-amg-gt63',
+            name: 'Mercedes-AMG GT 63',
+            subtitle: 'Спортивное купе',
+            emoji: '⭐',
+            price: 150000,
+            specs: {
+                'Двигатель': 'V8 4.0 л',
+                'Мощность': '577 л.с.',
+                'Разгон 0–100': '3.2 с',
+                'Макс. скорость': '315 км/ч',
+                'Расход': '13.2 л/100 км',
+                'Трансмиссия': '9-ступ. автомат',
+                'Привод': 'Полный',
+                'Объём': '3982 см³'
+            }
+        }, {
+            id: 'audi-r8-v10',
+            name: 'Audi R8 V10',
+            subtitle: 'Суперкар',
+            emoji: '🎯',
+            price: 160000,
+            specs: {
+                'Двигатель': 'V10 5.2 л',
+                'Мощность': '620 л.с.',
+                'Разгон 0–100': '3.1 с',
+                'Макс. скорость': '330 км/ч',
+                'Расход': '13.8 л/100 км',
+                'Трансмиссия': '7-ступ. DCT',
+                'Привод': 'Полный',
+                'Объём': '5204 см³'
+            }
+        }, {
+            id: 'lexus-lc500',
+            name: 'Lexus LC 500',
+            subtitle: 'Гран туризмо',
+            emoji: '🌸',
+            price: 105000,
+            specs: {
+                'Двигатель': 'V8 5.0 л',
+                'Мощность': '477 л.с.',
+                'Разгон 0–100': '4.4 с',
+                'Макс. скорость': '270 км/ч',
+                'Расход': '11.8 л/100 км',
+                'Трансмиссия': '10-ступ. автомат',
+                'Привод': 'Задний',
+                'Объём': '4969 см³'
+            }
+        }];
+
+        // ----- Генерация карточек -----
+        const carsGrid = document.getElementById('carsGrid');
+        carsData.forEach((car, index) => {
+            const card = document.createElement('div');
+            card.className = `car-card fade-up delay-${(index % 6) + 1}`;
+            card.innerHTML = `
+                <div class="car-image">
+                    <span class="car-emoji">${car.emoji}</span>
+                </div>
+                <div class="car-content">
+                    <h3>${car.name}</h3>
+                    <div class="subtitle">${car.subtitle}</div>
+                    <div class="specs">
+                        <span>${car.specs['Мощность'] || ''}</span>
+                        <span>${car.specs['Разгон 0–100'] || ''}</span>
+                        <span>${Object.values(car.specs).slice(0,1)}</span>
+                    </div>
+                    <div class="price">$${car.price.toLocaleString()} <small>USD</small></div>
+                    <button class="btn-details" data-id="${car.id}">Подробнее</button>
+                </div>
+            `;
+            carsGrid.appendChild(card);
+        });
+
+        // ----- Модальное окно для авто -----
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSub = document.getElementById('modalSub');
+        const modalBody = document.getElementById('modalBody');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalBuyBtn = document.getElementById('modalBuyBtn');
+
+        function openModal(carId) {
+            const car = carsData.find(c => c.id === carId);
+            if (!car) return;
+
+            modalIcon.textContent = car.emoji || '🚗';
+            modalTitle.textContent = car.name;
+            modalSub.textContent = car.subtitle;
+            modalPrice.innerHTML = `$${car.price.toLocaleString()} <small>USD</small>`;
+
+            let bodyHTML = '';
+            for (const [key, value] of Object.entries(car.specs)) {
+                bodyHTML += `
+                    <div class="spec-item">
+                        <span class="label">${key}</span>
+                        <span class="value">${value}</span>
+                    </div>
+                `;
+            }
+            modalBody.innerHTML = bodyHTML;
+
+            const params = new URLSearchParams({
+                car: car.name,
+                price: car.price,
+                id: car.id
+            });
+            modalBuyBtn.href = `оплата.html?${params.toString()}`;
+
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalCloseBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        document.querySelectorAll('.btn-details').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.id;
+                openModal(id);
+            });
+        });
+
+        // ----- Визитка -----
+        const visitModal = document.getElementById('visitModal');
+        const visitCloseBtn = document.getElementById('visitCloseBtn');
+        const contactBtn = document.getElementById('contactBtn');
+
+        function openVisitCard() {
+            visitModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVisitCard() {
+            visitModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        contactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openVisitCard();
+        });
+
+        visitCloseBtn.addEventListener('click', closeVisitCard);
+        visitModal.addEventListener('click', (e) => {
+            if (e.target === visitModal) closeVisitCard();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && visitModal.classList.contains('active')) {
+                closeVisitCard();
+            }
+        });
+
+        // ----- Hamburger, header, fade-up -----
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        const fadeEls = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+        fadeEls.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>Verification: 100c5ab6928152d0</body>
+</html>

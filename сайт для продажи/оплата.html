@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Оплата криптовалютой — Luxury Motors</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #141414;
+            --bg-secondary: #1e1e1e;
+            --bg-card: #252525;
+            --gray-200: #d0d0d0;
+            --gray-300: #b0b0b0;
+            --text-primary: #ffffff;
+            --text-secondary: #c0c0c0;
+            --text-muted: #777777;
+            --radius: 16px;
+            --transition: 0.4s ease;
+            --shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 640px;
+            width: 100%;
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 32px 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .sub {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+        .order-summary {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        .order-summary .car-name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .order-summary .car-name small {
+            display: block;
+            font-weight: 400;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .order-summary .total {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-200);
+        }
+        .order-summary .total small {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+        }
+        .payment-methods {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .payment-method-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px 16px;
+            background: var(--bg-card);
+            border: 2px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+        }
+        .payment-method-btn:hover {
+            border-color: rgba(255,255,255,0.15);
+        }
+        .payment-method-btn.active {
+            border-color: var(--gray-300);
+            background: rgba(255,255,255,0.04);
+            color: var(--text-primary);
+        }
+        .payment-method-btn .icon {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .payment-details {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            border: 1px solid rgba(255,255,255,0.03);
+            margin-bottom: 24px;
+        }
+        .payment-details .qr-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .payment-details .qr-box {
+            flex-shrink: 0;
+            width: 160px;
+            height: 160px;
+            background: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .payment-details .qr-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .payment-details .address-box {
+            flex: 1;
+            min-width: 180px;
+        }
+        .payment-details .address-box label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .payment-details .address-box .address {
+            background: rgba(0,0,0,0.3);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'Inter', monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border: 1px solid rgba(255,255,255,0.04);
+            margin: 6px 0 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .payment-details .address-box .copy-btn {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-secondary);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+        .payment-details .address-box .copy-btn:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-primary);
+        }
+        .payment-details .note {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            border-left: 3px solid var(--gray-300);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .payment-details .note strong {
+            color: var(--text-primary);
+        }
+        .actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .actions .btn-back {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-secondary);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .actions .btn-back:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-primary);
+        }
+        .actions .btn-confirm {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            color: var(--text-primary);
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            flex: 1;
+            text-align: center;
+        }
+        .actions .btn-confirm:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .actions .btn-confirm:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        .status-box {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        .status-box.pending {
+            display: block;
+            background: rgba(255,193,7,0.15);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+        .status-box.approved {
+            display: block;
+            background: rgba(40,167,69,0.15);
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+        .status-box.rejected {
+            display: block;
+            background: rgba(220,53,69,0.15);
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 28px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 9999;
+            backdrop-filter: blur(20px);
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        /* фон */
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-layer {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.02), transparent 70%);
+            animation: floatBg 20s ease-in-out infinite alternate;
+        }
+        .bg-layer:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: -10%;
+            right: -10%;
+            animation-duration: 25s;
+        }
+        .bg-layer:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: -10%;
+            left: -10%;
+            animation-duration: 30s;
+            animation-delay: -5s;
+        }
+        @keyframes floatBg {
+            0% { transform: translate(0,0) scale(1); }
+            100% { transform: translate(40px,30px) scale(1.05); }
+        }
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle at 20px 20px, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: gridPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes gridPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px; }
+            .payment-details .qr-row { flex-direction: column; align-items: center; }
+            .payment-details .qr-box { width: 140px; height: 140px; }
+            .order-summary { flex-direction: column; align-items: stretch; text-align: center; }
+            .payment-methods { flex-direction: column; }
+            .actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"><div class="bg-layer"></div><div class="bg-layer"></div></div>
+    <div class="grid-overlay"></div>
+
+    <div class="toast" id="toast">✓ Скопировано</div>
+
+    <div class="container">
+        <h1>Оплата криптовалютой</h1>
+        <div class="sub">Переведите сумму на указанный адрес</div>
+
+        <div class="order-summary">
+            <div class="car-name" id="carName">Название автомобиля <small>модель</small></div>
+            <div class="total" id="totalPrice">$0 <small>USD</small></div>
+        </div>
+
+        <!-- статус -->
+        <div id="statusBox" class="status-box"></div>
+
+        <div class="payment-methods">
+            <button class="payment-method-btn active" data-method="btc">
+                <span class="icon">₿</span> Bitcoin
+            </button>
+            <button class="payment-method-btn" data-method="trc">
+                <span class="icon">⚡</span> TRC-20 (USDT)
+            </button>
+        </div>
+
+        <div class="payment-details" id="paymentDetails"></div>
+
+        <div class="actions">
+            <a href="сайт.html" class="btn-back">← Назад</a>
+            <button class="btn-confirm" id="confirmBtn">✅ Я оплатил</button>
+        </div>
+    </div>
+
+    <script>
+        // ----- Параметры -----
+        const urlParams = new URLSearchParams(window.location.search);
+        const carName = urlParams.get('car') || 'Неизвестный автомобиль';
+        const carPrice = parseFloat(urlParams.get('price')) || 0;
+        const carId = urlParams.get('id') || 'unknown';
+
+        document.getElementById('carName').innerHTML = `${carName} <small>модель</small>`;
+        document.getElementById('totalPrice').innerHTML = `$${carPrice.toLocaleString()} <small>USD</small>`;
+
+        // ----- Адреса -----
+        const btcAddress = '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa';
+        const trcAddress = 'TXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+
+        function qrUrl(data) {
+            return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(data)}`;
+        }
+
+        function renderPayment(method) {
+            const container = document.getElementById('paymentDetails');
+            const isBtc = method === 'btc';
+            const address = isBtc ? btcAddress : trcAddress;
+            const label = isBtc ? 'Bitcoin (BTC)' : 'TRC-20 (USDT)';
+            const qrData = address; // просто адрес без префикса
+
+            container.innerHTML = `
+                <div class="qr-row">
+                    <div class="qr-box">
+                        <img src="${qrUrl(qrData)}" alt="QR-код для ${label}" />
+                    </div>
+                    <div class="address-box">
+                        <label>Адрес для перевода</label>
+                        <div class="address" id="addressText">${address}</div>
+                        <button class="copy-btn" onclick="copyAddress('${address}')">Копировать адрес</button>
+                    </div>
+                </div>
+                <div class="note">
+                    <strong>Важно:</strong> Отправьте точную сумму <strong>$${carPrice.toLocaleString()} USD</strong> в эквиваленте выбранной криптовалюты. Комиссия оплачивается отдельно.
+                </div>
+            `;
+        }
+
+        // Переключение методов
+        const methodBtns = document.querySelectorAll('.payment-method-btn');
+        methodBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                methodBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderPayment(btn.dataset.method);
+            });
+        });
+        renderPayment('btc');
+
+        // Копирование
+        function copyAddress(address) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(address).then(() => showToast('✓ Адрес скопирован')).catch(() => fallbackCopy(address));
+            } else {
+                fallbackCopy(address);
+            }
+        }
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast('✓ Адрес скопирован');
+            } catch (e) {
+                showToast('✗ Не удалось скопировать');
+            }
+            document.body.removeChild(ta);
+        }
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // ----- Кнопка "Я оплатил" -----
+        const confirmBtn = document.getElementById('confirmBtn');
+        const statusBox = document.getElementById('statusBox');
+
+        // Проверка статуса при загрузке
+        function checkOrderStatus() {
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const orderIndex = orders.findIndex(o => o.id === carId && o.car === carName);
+
+            if (orderIndex !== -1) {
+                const order = orders[orderIndex];
+                // Если статус 'rejected' — удаляем заявку и показываем исходное состояние
+                if (order.status === 'rejected') {
+                    orders.splice(orderIndex, 1);
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    // Сбрасываем UI
+                    statusBox.className = '';
+                    statusBox.textContent = '';
+                    confirmBtn.disabled = false;
+                    confirmBtn.style.opacity = '1';
+                    return;
+                }
+                // Иначе показываем статус
+                statusBox.className = 'status-box';
+                if (order.status === 'pending') {
+                    statusBox.className = 'status-box pending';
+                    statusBox.textContent = '⏳ Ожидает подтверждения администратора.';
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.opacity = '0.5';
+                } else if (order.status === 'approved') {
+                    statusBox.className = 'status-box approved';
+                    statusBox.textContent = '✅ Платёж подтверждён! Спасибо за покупку.';
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.opacity = '0.5';
+                }
+            } else {
+                // Нет заявки — исходное состояние
+                statusBox.className = '';
+                statusBox.textContent = '';
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+            }
+        }
+        checkOrderStatus();
+
+        confirmBtn.addEventListener('click', () => {
+            // Проверяем, есть ли уже заявка (не отклонённая, т.к. отклонённые мы удаляем)
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const existing = orders.find(o => o.id === carId && o.car === carName);
+            if (existing) {
+                showToast('⏳ Заявка уже отправлена, ожидайте.');
+                return;
+            }
+
+            // Создаём заявку
+            const newOrder = {
+                id: carId,
+                car: carName,
+                price: carPrice,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            };
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            showToast('✅ Заявка отправлена! Ожидайте подтверждения.');
+            statusBox.className = 'status-box pending';
+            statusBox.textContent = '⏳ Ожидает подтверждения администратора.';
+            confirmBtn.disabled = true;
+            confirmBtn.style.opacity = '0.5';
+        });
+
+        // Сделаем функции глобальными
+        window.copyAddress = copyAddress;
+        window.showToast = showToast;
+    </script>
+</body>
+</html>
